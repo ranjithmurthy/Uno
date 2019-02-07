@@ -15,10 +15,10 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Uno.UI.Samples.UITests.Image
 {
-	[Controls.SampleControlInfo("Image", "Image_Stretch_Alignment")]
-	public sealed partial class Image_Stretch_Alignment : UserControl
+	[Controls.SampleControlInfo("Image", "Image_Stretch_Alignment_Equal")]
+	public sealed partial class Image_Stretch_Alignment_Equal : UserControl
     {
-        public Image_Stretch_Alignment()
+        public Image_Stretch_Alignment_Equal()
         {
             this.InitializeComponent();
         }

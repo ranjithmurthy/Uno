@@ -213,13 +213,13 @@ namespace Windows.UI.Xaml.Controls
 			else
 			{
 				ret = AdjustSize(availableSize, _lastMeasuredSize);
-
-				// Clamp the size to the available size (used for Strech.None)
-				ret = new Size(
-					double.IsInfinity(availableSize.Width) ? ret.Width : Math.Min(availableSize.Width, ret.Width),
-					double.IsInfinity(availableSize.Height) ? ret.Height : Math.Min(availableSize.Height, ret.Height)
-				);
 			}
+
+			// Always making sure the ret size isn't bigger than the available size for an image with a fixed width or height
+			ret = new Size(
+				!Double.IsNaN(Width) && (ret.Width > availableSize.Width) ? availableSize.Width : ret.Width,
+				!Double.IsNaN(Width) &&  (ret.Height > availableSize.Height) ? availableSize.Height : ret.Height
+			);
 
 			this.Log().LogTrace($"Measure {this} availableSize:{availableSize} measuredSize:{_lastMeasuredSize} ret:{ret}");
 
@@ -277,7 +277,7 @@ namespace Windows.UI.Xaml.Controls
 							// |             |
 							// \-------------/
 							//
-
+							
 							return (sourceRect.X, sourceRect.Y, null, finalSize.Height);
 						}
 						else

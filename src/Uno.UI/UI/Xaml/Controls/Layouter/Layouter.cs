@@ -49,7 +49,7 @@ namespace Windows.UI.Xaml.Controls
 		{
 			_element = element;
 		}
-		
+
 		/// <summary>
 		/// Determine the size of the panel.
 		/// </summary>
@@ -371,7 +371,25 @@ namespace Windows.UI.Xaml.Controls
 				var hasChildMinWidth = childMinWidth > 0.0f;
 				var hasChildMinHeight = childMinHeight > 0.0f;
 
-				if (
+				// Only for this specific case when the framework element is an Image control
+				// When the image as an auto size and stretches options other than None
+				var image = frameworkElement as Image;
+		
+				if (image != null && image.Stretch != Windows.UI.Xaml.Media.Stretch.None && Double.IsNaN(image.Width) && Double.IsNaN(image.Height))
+				{
+					frame = new Rect(
+						x + childMargin.Left,
+						y + childMargin.Top,
+						width - childMargin.Left - childMargin.Right,
+						height - childMargin.Top - childMargin.Bottom
+					);
+
+					frame.Size = frameworkElement.AdjustArrange(frame.Size);
+
+				}
+				else
+				{
+					if (
 					childVerticalAlignment != VerticalAlignment.Stretch
 					|| childHorizontalAlignment != HorizontalAlignment.Stretch
 					|| hasChildWidth
@@ -381,96 +399,96 @@ namespace Windows.UI.Xaml.Controls
 					|| hasChildMinWidth
 					|| hasChildMinHeight
 					)
-				{
-					var desiredSize = DesiredChildSize(view);
-
-					// Apply vertical alignment
-					if (
-						childVerticalAlignment != VerticalAlignment.Stretch
-						|| hasChildHeight
-						|| hasChildMaxHeight
-						|| hasChildMinHeight
-					)
 					{
+						var desiredSize = DesiredChildSize(view);
 
-						var actualHeight = GetActualHeight(height,
-							childVerticalAlignment,
-							childMaxHeight,
-							childMinHeight,
-							childHeight,
-							childMargin,
-							hasChildHeight,
-							hasChildMaxHeight,
-							hasChildMinHeight,
-							desiredSize);
-
-						switch (childVerticalAlignment)
+						// Apply vertical alignment
+						if (
+							childVerticalAlignment != VerticalAlignment.Stretch
+							|| hasChildHeight
+							|| hasChildMaxHeight
+							|| hasChildMinHeight
+						)
 						{
-							case VerticalAlignment.Top:
-								y = frame.Y;
-								break;
 
-							case VerticalAlignment.Bottom:
-								y = frame.Y + frame.Height - actualHeight;
-								break;
+							var actualHeight = GetActualHeight(height,
+								childVerticalAlignment,
+								childMaxHeight,
+								childMinHeight,
+								childHeight,
+								childMargin,
+								hasChildHeight,
+								hasChildMaxHeight,
+								hasChildMinHeight,
+								desiredSize);
 
-							case VerticalAlignment.Stretch:
-							case VerticalAlignment.Center:
-								y = frame.Y + (frame.Height - actualHeight) / 2;
-								break;
+							switch (childVerticalAlignment)
+							{
+								case VerticalAlignment.Top:
+									y = frame.Y;
+									break;
+
+								case VerticalAlignment.Bottom:
+									y = frame.Y + frame.Height - actualHeight;
+									break;
+
+								case VerticalAlignment.Stretch:
+								case VerticalAlignment.Center:
+									y = frame.Y + (frame.Height - actualHeight) / 2;
+									break;
+							}
+
+							height = actualHeight;
 						}
 
-						height = actualHeight;
-					}
-
-					// Apply horizontal alignment
-					if (
-						childHorizontalAlignment != HorizontalAlignment.Stretch
-						|| hasChildWidth
-						|| hasChildMaxWidth
-						|| hasChildMinWidth
-					)
-					{
-						var actualWidth = GetActualWidth(width,
-							childHorizontalAlignment,
-							childMaxWidth,
-							childMinWidth,
-							childWidth,
-							childMargin,
-							hasChildWidth,
-							hasChildMaxWidth,
-							hasChildMinWidth,
-							desiredSize);
-
-						switch (childHorizontalAlignment)
+						// Apply horizontal alignment
+						if (
+							childHorizontalAlignment != HorizontalAlignment.Stretch
+							|| hasChildWidth
+							|| hasChildMaxWidth
+							|| hasChildMinWidth
+						)
 						{
-							case HorizontalAlignment.Left:
-								x = frame.X;
-								break;
+							var actualWidth = GetActualWidth(width,
+								childHorizontalAlignment,
+								childMaxWidth,
+								childMinWidth,
+								childWidth,
+								childMargin,
+								hasChildWidth,
+								hasChildMaxWidth,
+								hasChildMinWidth,
+								desiredSize);
 
-							case HorizontalAlignment.Right:
-								x = frame.X + frame.Width - actualWidth;
-								break;
+							switch (childHorizontalAlignment)
+							{
+								case HorizontalAlignment.Left:
+									x = frame.X;
+									break;
 
-							case HorizontalAlignment.Stretch:
-							case HorizontalAlignment.Center:
-								x = frame.X + (frame.Width - actualWidth) / 2;
-								break;
+								case HorizontalAlignment.Right:
+									x = frame.X + frame.Width - actualWidth;
+									break;
+
+								case HorizontalAlignment.Stretch:
+								case HorizontalAlignment.Center:
+									x = frame.X + (frame.Width - actualWidth) / 2;
+									break;
+							}
+
+							width = actualWidth;
 						}
-
-						width = actualWidth;
 					}
+
+					frame = new Rect(
+						x + childMargin.Left,
+						y + childMargin.Top,
+						width - childMargin.Left - childMargin.Right,
+						height - childMargin.Top - childMargin.Bottom
+					);
+
+					frame.Size = frameworkElement.AdjustArrange(frame.Size);
 				}
-
-				frame = new Rect(
-					x + childMargin.Left,
-					y + childMargin.Top,
-					width - childMargin.Left - childMargin.Right,
-					height - childMargin.Top - childMargin.Bottom
-				);
-
-				frame.Size = frameworkElement.AdjustArrange(frame.Size);
-
 			}
 
 			return new Rect(
