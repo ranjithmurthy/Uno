@@ -132,6 +132,7 @@
  * Transforms are now fully functionnal
  * #527 Fix for `Selector.SelectionChanged` is raised twice on updated selection
  * [Wasm] Fixed ListView infinite loop when using custom containers
+ * 145075 [Android] [Wasm] Android and Wasm don't match all specific UWP behaviors for the Image control.
 
 ## Release 1.42
 
