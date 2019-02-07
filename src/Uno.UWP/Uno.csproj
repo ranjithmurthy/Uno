@@ -32,7 +32,7 @@
 	<ItemGroup>
 		<PackageReference Include="System.Numerics.Vectors" Version="4.5.0-preview1-26216-02" />
 		<PackageReference Include="Uno.SourceGenerationTasks">
-			<Version>1.29.0-dev.237</Version>
+			<Version>1.29.0-dev.241</Version>
 		</PackageReference>
 		<PackageReference Include="Uno.Core">
 			<Version>1.26.0-dev.58</Version>
@@ -65,6 +65,10 @@
 	<ItemGroup Condition="$(IsMonoAndroid) or $(IsXamarinIOS) or '$(TargetFramework)'=='xamarinmac20'">
 		<Reference Include="System.Numerics" />
 		<Reference Include="System.Numerics.Vectors" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Analyzer Include="$(MSBuildThisFileDirectory)..\Uno.MonoAnalyzers\bin\$(Configuration)\net46\Uno.MonoAnalyzers.dll" />
 	</ItemGroup>
 
 	<ItemGroup>

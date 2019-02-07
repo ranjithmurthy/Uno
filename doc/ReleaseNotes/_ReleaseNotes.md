@@ -63,6 +63,11 @@
 * Add support for Flyout anchor
 * Improved XAML designer support
 * Improved DependencyObject performance under AOT (JS dynCalls for overrides/delegates inside of EH blocks)
+* Add support for `ICollectionView.CopyTo`
+* Add support for MatrixTransform, UIElement.TransformToVisual now returns a MatrixTransform
+* Add support for `ViewBox`
+* Add support for `AutoSuggestBox.ItemsSource`
+* Add support for `Selector.SelectedValuePath` (e.g. useful for ComboBox)
 
 ### Breaking changes
 * Refactored ToggleSwitch Default Native XAML Styles. (cf. 'NativeDefaultToggleSwitch' styles in Generic.Native.xaml)
@@ -121,6 +126,12 @@
  * Support for duplicate XAML `AutomationProperties.Name`
  * `ListViewBase.SelectedItems` is updated on selection change in Single selection mode
  * #528 ComboBoxes are empty when no datacontext
+ * Ensure that Uno.UI can be used with VS15.8 and earlier (prevent the use of VS15.9 and later String APIs)
+ * [Android] Listview Items stay visually in a pressed state,(can click multiple) when you click then scroll down, click another item, and scroll back up
+ * 144101 fixed `ListView` group headers messed up on item update
+ * Transforms are now fully functionnal
+ * #527 Fix for `Selector.SelectionChanged` is raised twice on updated selection
+ * [Wasm] Fixed ListView infinite loop when using custom containers
 
 ## Release 1.42
 

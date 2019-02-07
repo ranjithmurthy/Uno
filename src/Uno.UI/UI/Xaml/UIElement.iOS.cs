@@ -108,35 +108,6 @@ namespace Windows.UI.Xaml
 			};
 		}
 
-		static partial void OnRenderTransformChanged(object dependencyObject, DependencyPropertyChangedEventArgs args)
-		{
-			var newValue = args.NewValue as Transform;
-			var oldValue = args.OldValue as Transform;
-
-			if (newValue != null)
-			{
-				var view = (UIElement)dependencyObject;
-
-				newValue.View = view;
-				newValue.Origin = view.RenderTransformOrigin;
-			}
-			if (oldValue != null)
-			{
-				oldValue.View = null;
-			}
-		}
-
-		static partial void OnRenderTransformOriginChanged(object dependencyObject, DependencyPropertyChangedEventArgs args)
-		{
-			var view = (UIElement)dependencyObject;
-			var point = (Point)args.NewValue;
-
-			if (view.RenderTransform != null)
-			{
-				view.RenderTransform.Origin = point;
-			}
-		}
-
 		partial void OnOpacityChanged(DependencyPropertyChangedEventArgs args)
 		{
 			// Don't update the internal value if the value is being animated.
@@ -230,8 +201,17 @@ namespace Windows.UI.Xaml
 			var unit = new CGRect(0, 0, 1, 1);
 			var transformed = visual.ConvertRectFromView(unit, this);
 
-			// TODO: UWP returns a MatrixTransform here. For now TransformToVisual doesn't support rotations, scalings, etc.
-			return new TranslateTransform { X = transformed.X, Y = transformed.Y };
+			return new MatrixTransform
+			{
+				Matrix = new Matrix(
+					m11: 1,
+					m12: 0,
+					m21: 0,
+					m22: 1,
+					offsetX: transformed.X,
+					offsetY: transformed.Y
+				)
+			};
 		}
 
 

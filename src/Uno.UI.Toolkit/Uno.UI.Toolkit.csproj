@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="Uno.SourceGenerationTasks">
-      <Version>1.29.0-dev.237</Version>
+      <Version>1.29.0-dev.241</Version>
     </PackageReference>
     <PackageReference Include="Uno.Core">
       <Version>1.26.0-dev.58</Version>
@@ -106,6 +106,10 @@
 
 	<!-- Override existing target, this project cannot be published -->
 	<Target Name="Publish" />
+
+	<ItemGroup>
+		<Analyzer Include="$(MSBuildThisFileDirectory)..\Uno.MonoAnalyzers\bin\$(Configuration)\net46\Uno.MonoAnalyzers.dll" />
+	</ItemGroup>
 
 	<PropertyGroup>
 		<UnoUIGeneratorsBinPath>..\SourceGenerators\Uno.UI.SourceGenerators\bin\$(Configuration)</UnoUIGeneratorsBinPath>
